@@ -118,17 +118,3 @@ my-anime-media/
 
 Lihat [deployment.md](./deployment.md) untuk panduan lengkap deploy ke VPS (PM2 + Nginx) atau Docker.
 
-
----
-
-## Support
-
-If you find this project helpful, consider supporting the developer:
-
-<div align="center">
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/T6T61WHJPX)
-&nbsp;
-<a href="https://trakteer.id/bima_anzalta" target="_blank"><img src="https://edge-cdn.trakteer.id/images/embed/trbtn-red-1.png?v=14-05-2025" height="40" style="border:0px;height:40px;" alt="Trakteer Saya"></a>
-
-</div>
