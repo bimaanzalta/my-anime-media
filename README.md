@@ -1,75 +1,119 @@
-# Nuxt Minimal Starter
+# AniVerse
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Platform media anime & manga Indonesia — artikel, review, forum diskusi, dan integrasi MyAnimeList API.
 
-## Setup
+## Tech Stack
 
-Make sure to install dependencies:
+| Layer | Teknologi |
+|---|---|
+| Framework | Nuxt 4 (SSR + Nitro) |
+| UI | Vue 3, Tailwind CSS v4 |
+| Database | MySQL 8 + Drizzle ORM |
+| Auth | JWT (jose) + bcryptjs |
+| Rich Text | TipTap v3 |
+| MAL API | OAuth 2.0 PKCE |
+| Utilities | VueUse, Lenis (smooth scroll) |
+| Font | Urbanist (heading) + Plus Jakarta Sans (body) |
+
+## Fitur
+
+- **Artikel & Review** — CRUD dengan rich text editor TipTap, kategori, dan tagging anime
+- **Forum** — Thread diskusi, komentar bersarang, kategori forum
+- **Anime** — Pencarian dan detail anime via MyAnimeList API
+- **Auth** — Register, login, role user/moderator/admin
+- **Admin Panel** — Kelola artikel, review, koneksi MAL OAuth
+- **Light/Dark Mode** — Toggle persisten via VueUse + localStorage
+- **Responsive** — Mobile-friendly dengan hamburger nav
+
+## Prasyarat
+
+- Node.js 20+
+- MySQL 8+
+- MyAnimeList API credentials ([myanimelist.net/apiconfig](https://myanimelist.net/apiconfig))
+
+## Quick Start
 
 ```bash
-# npm
+# 1. Clone & install
+git clone <repo-url>
+cd my-anime-media
 npm install
 
-# pnpm
-pnpm install
+# 2. Setup environment
+cp .env.example .env
+# Edit .env sesuai konfigurasi lokal
 
-# yarn
-yarn install
+# 3. Buat database MySQL
+mysql -u root -p -e "CREATE DATABASE my_anime_media CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
-# bun
-bun install
-```
+# 4. Jalankan migrasi
+npm run db:migrate
 
-## Development Server
+# 5. (Opsional) Seed data awal
+npm run db:seed
 
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
+# 6. Jalankan dev server
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+Buka `http://localhost:3000`.
 
-Build the application for production:
+## Environment Variables
+
+Salin `.env.example` ke `.env` lalu isi:
+
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=my_anime_media
+
+JWT_SECRET=          # min 32 karakter, generate: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+
+MAL_CLIENT_ID=       # dari myanimelist.net/apiconfig
+MAL_CLIENT_SECRET=   # dari myanimelist.net/apiconfig
+
+SITE_URL=http://localhost:3000
+```
+
+## Scripts
 
 ```bash
-# npm
-npm run build
+npm run dev           # dev server (http://localhost:3000)
+npm run build         # build production
+npm run preview       # preview hasil build
 
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+npm run db:generate   # generate file migrasi dari schema
+npm run db:migrate    # jalankan migrasi ke database
+npm run db:push       # push schema langsung (dev only)
+npm run db:studio     # buka Drizzle Studio (GUI)
+npm run db:seed       # seed data awal
 ```
 
-Locally preview production build:
+## Struktur Proyek
 
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+```
+my-anime-media/
+├── app/
+│   ├── assets/css/         # Tailwind + CSS custom properties (light/dark tokens)
+│   ├── components/         # AnimeSearchInput, TipTapEditor, dll
+│   ├── composables/        # useAuth, useTheme
+│   ├── layouts/            # default.vue (navbar + footer)
+│   ├── middleware/         # auth, admin
+│   └── pages/              # routing (articles, reviews, forum, anime, admin, auth)
+├── server/
+│   ├── api/                # Nitro route handlers (REST API)
+│   ├── db/
+│   │   ├── schema.ts       # Drizzle schema (MySQL)
+│   │   ├── migrations/     # file migrasi SQL
+│   │   └── seed.ts         # data awal
+│   └── utils/              # auth helpers, MAL client
+├── nuxt.config.ts
+├── drizzle.config.ts
+└── deployment.md           # panduan deploy VPS / Docker
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Deployment
+
+Lihat [deployment.md](./deployment.md) untuk panduan lengkap deploy ke VPS (PM2 + Nginx) atau Docker.
